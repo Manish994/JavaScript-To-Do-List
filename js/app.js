@@ -14,6 +14,28 @@ const LINE_THROUGH = "lineThrough";
 //Variables
 let LIST, id;
 
+//get item from localStorage
+const data = localStorage.getItem("ToDo");
+//check data is not empty
+if (data) {
+   LIST = JSON.parse(data);
+   //set the id to last from list length
+   id = LIST.length;
+   //load the LIST to the user interface
+   loadList(LIST);
+} else {
+   //IF data is empty
+   //create empty LIST array
+   LIST = [];
+   id = 0;
+}
+//loads item to the user interface
+function loadList(array) {
+   array.forEach(function (indexValue) {
+      addToDo(indexValue.name, indexValue.id, indexValue.done, indexValue.trash);
+   })
+}
+
 //Show Today date
 const options = {
    weekday: "long",
@@ -92,5 +114,5 @@ listElement.addEventListener("click", function (e) {
    }
    //add item to local storage
    //this code must be added where LIST array is updated.
-   localStorage.setItem("ToDo",JSON.stringify(LIST));
+   localStorage.setItem("ToDo", JSON.stringify(LIST));
 })
