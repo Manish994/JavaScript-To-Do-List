@@ -1,23 +1,28 @@
-// CODE EXPLAINED channel
-
 //Select the elements
 const clear = document.querySelector(".clear");
 const dateElement = document.getElementById("date");
 const listElement = document.getElementById("list");
 const inputElement = document.getElementById("input");
 
+
+//
 //Classes Names
 const CHECK = "fa-check-circle";
 const UNCHECK = "fa-circle-thin";
 const LINE_THROUGH = "lineThrough";
 
+
+//
 //Variables
 let LIST, id;
 
+
+//
 //get item from localStorage
 const data = localStorage.getItem("ToDo");
 //check data is not empty
 if (data) {
+   debugger;
    LIST = JSON.parse(data);
    //set the id to last from list length
    id = LIST.length;
@@ -35,7 +40,15 @@ function loadList(array) {
       addToDo(indexValue.name, indexValue.id, indexValue.done, indexValue.trash);
    })
 }
+//clear local storage
+clear.addEventListener("click", (() => {
+   localStorage.clear();
+   location.reload();
+}));
 
+
+
+//
 //Show Today date
 const options = {
    weekday: "long",
@@ -45,6 +58,9 @@ const options = {
 const today = new Date();
 dateElement.innerHTML = today.toLocaleDateString("en-us", options);
 
+
+
+//
 //Function add to do
 function addToDo(todo, id, done, trash) {
    if (trash) {
@@ -64,6 +80,8 @@ function addToDo(todo, id, done, trash) {
 }
 
 
+
+//
 //add an item to the user interface when press Enter Key
 document.addEventListener("keyup", function (e) {
    if (e.keyCode == 13) {
@@ -87,6 +105,9 @@ document.addEventListener("keyup", function (e) {
    }
 });
 
+
+
+//
 //Complete To Do (toggle)
 function completeToDo(element) {
    element.classList.toggle(CHECK);
@@ -95,13 +116,11 @@ function completeToDo(element) {
 
    LIST[element.id].done = LIST[element.id].done ? false : true;
 }
-
 //remove ToDo
 function removeToDo(element) {
    element.parentNode.parentNode.removeChild(element.parentNode);
    LIST[element.id].trash = true;
 }
-
 //target the item dynamically
 listElement.addEventListener("click", function (e) {
    //returns the clicked element which is inside the list
