@@ -21,11 +21,18 @@ const today = new Date();
 dateElement.innerHTML = today.toLocaleDateString("en-us", options);
 
 //Function add to do
-function addToDo(todo) {
+function addToDo(todo, id, done, trash) {
+   if (trash) {
+      return;
+   }
+
+   const DONE = done ? CHECK : UNCHECK;
+   const LINE = done ? LINE_THROUGH : "";
+
    const item = `<li class="item">
-   <i class="fa ${UNCHECK} co" job="complete" id="0"></i>
-   <p class="text">${todo}</p>
-   <i class="fa fa-trash-o de" job="delete" id="0"></i>
+   <i class="fa ${DONE} co" job="complete" id=${id}></i>
+   <p class="text ${LINE}">${todo}</p>
+   <i class="fa fa-trash-o de" job="delete" id=${id}></i>
    </li>`;
    const position = "beforeend";
    listElement.insertAdjacentHTML(position, item);
@@ -35,10 +42,14 @@ function addToDo(todo) {
 //add an item to the user interface when press Enter Key
 document.addEventListener("keyup", function (e) {
    if (e.keyCode == 13) {
+      debugger;
       const todo = inputElement.value;
       //check empty or not 
       if (todo) {
          addToDo(todo);
       }
+      inputElement.value = '';
    }
-})
+});
+
+addToDo("Geeky Shows", 1, true, false);
