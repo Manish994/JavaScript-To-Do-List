@@ -11,6 +11,9 @@ const CHECK = "fa-check-circle";
 const UNCHECK = "fa-circle-thin";
 const LINE_THROUGH = "lineThrough";
 
+//Variables
+let LIST, id;
+
 //Show Today date
 const options = {
    weekday: "long",
@@ -42,14 +45,52 @@ function addToDo(todo, id, done, trash) {
 //add an item to the user interface when press Enter Key
 document.addEventListener("keyup", function (e) {
    if (e.keyCode == 13) {
-      debugger;
       const todo = inputElement.value;
       //check empty or not 
       if (todo) {
-         addToDo(todo);
+         addToDo(todo, id, false, false);
+         LIST.push({
+            name: todo,
+            id: id,
+            done: false,
+            trash: false
+         });
+
+         //add item to local storage
+         //this code must be added where list array is updated
+         localStorage.setItem("ToDo", JSON.stringify(LIST));
+         id++;
       }
       inputElement.value = '';
    }
 });
 
-addToDo("Geeky Shows", 1, true, false);
+//Complete To Do (toggle)
+function completeToDo(element) {
+   element.classList.toggle(CHECK);
+   element.classList.toggle(UNCHECK);
+   element.parentNode.querySelector('.text').classList.toggle(LINE_THROUGH);
+
+   LIST[element.id].done = LIST[element.id].done ? false : true;
+}
+
+//remove ToDo
+function removeToDo(element) {
+   element.parentNode.parentNode.removeChild(element.parentNode);
+   LIST[element.id].trash = true;
+}
+
+//target the item dynamically
+listElement.addEventListener("click", function (e) {
+   //returns the clicked element which is inside the list
+   const element = e.target;
+   const elementJOB = element.attributes.job.value;
+   if (elementJOB === "complete") {
+      completeToDo(element);
+   } else if (elementJOB === "delete") {
+      removeToDo(element);
+   }
+   //add item to local storage
+   //this code must be added where LIST array is updated.
+   localStorage.setItem("ToDo",JSON.stringify(LIST));
+})
